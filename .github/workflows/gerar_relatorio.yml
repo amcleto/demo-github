@@ -1,7 +1,7 @@
 name: Gerar Relatório Vendas
+
 on:
   workflow_dispatch:
-  
   push:
     paths:
       - 'dados/**'
@@ -15,15 +15,15 @@ jobs:
 
     steps:
       - name: Obter os ficheiros do repositório
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Mostrar estrutura recebida
-          run:
-            pwd
-            whoami
-            ls -la
-            find . max-depth 3 -type f
-      
+        run: |
+          pwd
+          whoami
+          ls -la
+          find . -maxdepth 3 -type f
+
       - name: Consultar Sistema
         run: bash scripts/consultar_sistema.sh
 
@@ -32,12 +32,12 @@ jobs:
 
       - name: Mostrar relatório no log
         run: cat resultados/relatorio_vendas.txt
-      
+
       - name: Guardar relatório e o log
         uses: actions/upload-artifact@v4
         with:
           name: relatorio-processamento
-          path: 
+          path: |
             resultados/relatorio_vendas.txt
             logs/execucao.log
           retention-days: 5
